@@ -1,0 +1,85 @@
+// Double-Linked list
+package main
+
+import "fmt"
+
+type Song struct {
+	name     string
+	artist   string
+	previous *Song
+	next     *Song
+}
+
+type Playlist struct {
+	name       string
+	head       *Song
+	tail       *Song
+	nowplaying *Song
+}
+
+func createPlaylist(name string) *Playlist {
+	return &Playlist{
+		name: name,
+	}
+}
+
+func (p *Playlist) addSong(name, artist string) error {
+	s := &Song{
+		name:   name,
+		artist: artist,
+	}
+	if p.head == nil {
+		p.head = s
+	} else {
+		currentnode := p.tail
+		currentnode.next = s
+		s.previous = p.tail // p is present node, till when the loop has encountered
+
+	}
+	p.tail = s
+	return nil
+}
+
+func (p *Playlist) showAllSongs() error {
+	currentnode := p.head
+	if currentnode.next == nil {
+		fmt.Println("Playlist is empty")
+	}
+	for currentnode.next != nil {
+		currentnode = currentnode.next
+		fmt.Printf("Song :- %s %s \n ", currentnode.name, currentnode.artist)
+	}
+	return nil
+}
+func (p *Playlist) StartPlaylist() *Song {
+	p.nowplaying = p.head
+	return p.nowplaying
+}
+
+func (p *Playlist) NextSong() *Song {
+	p.nowplaying = p.nowplaying.next
+	return p.nowplaying
+}
+
+func (p *Playlist) PreviousSong() *Song {
+	p.nowplaying = p.nowplaying.previous
+	return p.nowplaying
+}
+
+func main() {
+	Playlist := "myPlaylist"
+	myplaylist := createPlaylist(Playlist)
+
+	fmt.Println("Adding songs to the playlist...........")
+	myplaylist.addSong("Ophelia", "The Lumineers")
+	myplaylist.addSong("Crown", "The Lumineers")
+	myplaylist.addSong("Dh", "The sky")
+
+	fmt.Println("Showing all songs .........")
+	myplaylist.showAllSongs()
+
+	//	myplaylist.PreviousSong()
+
+	//myplaylist.NextSong()
+
+}
