@@ -1,0 +1,85 @@
+//create a playlist of songs
+package main
+
+import "fmt"
+
+//song data structure
+type Song struct {
+	name   string
+	artist string
+	next   *Song
+}
+
+// playlist datastructure
+type playlist struct {
+	name       string
+	head       *Song
+	nowplaying *Song
+}
+
+func createPlaylist(name string) *playlist {
+	return &playlist{
+		name: name,
+	}
+}
+
+func (p *playlist) addSong(name, artist string) error {
+	s := &Song{
+		name:   name,
+		artist: artist,
+	}
+	//if playlist current head is nill add s there itself as it is a 1st element of thes string
+	if p.head == nil {
+		p.head = s
+	} else {
+		currentNode := p.head
+		for currentNode.next != nil {
+			currentNode = currentNode.next
+		}
+		currentNode.next = s // current node is identified, now put S at the next of current ndoe
+	}
+	return nil
+}
+
+func (p *playlist) showPlaylist() error {
+	currentNode := p.head
+	if currentNode.next == nil {
+		fmt.Println("The Playlist is empty")
+	}
+	for currentNode.next != nil {
+		currentNode = currentNode.next
+		fmt.Println("Song 1 is :", currentNode)
+	}
+	return nil
+}
+
+func (p *playlist) startPlaying() *Song {
+	p.nowplaying = p.head //nowplaying is pointer to song struct
+	fmt.Println(p.nowplaying)
+	return p.nowplaying
+}
+
+func (p *playlist) nextSong() *Song {
+	p.nowplaying = p.nowplaying.next
+	return p.nowplaying
+}
+
+func main() {
+	playlistName := "Myplaylist"
+	myPlaylist := createPlaylist(playlistName)
+	fmt.Println("playlist has been created")
+
+	fmt.Println("Adding the songs to the playlist ......")
+	myPlaylist.addSong("love yourself ", "Justein biber")
+	myPlaylist.addSong("Witout You", "David guetta")
+
+	fmt.Println("Showing the playlist")
+	myPlaylist.showPlaylist()
+
+	myPlaylist.startPlaying()
+	fmt.Printf("Now Playing: %s by %S \n", myPlaylist.nowplaying.name, myPlaylist.nowplaying.artist)
+
+	myPlaylist.nextSong()
+	fmt.Println("Next Song ...")
+	fmt.Printf("Now Playing: %s by %S \n", myPlaylist.nowplaying.name, myPlaylist.nowplaying.artist)
+}
