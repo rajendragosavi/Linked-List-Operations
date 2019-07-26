@@ -45,6 +45,31 @@ func addNodeatEnd(newEmp, emplist *Employee) *Employee {
 	return emplist
 }
 
+// Finding mid of list *********************
+func findMid(emplist *Employee) *Employee {
+	var fastpr, slowptr *Employee
+	fmt.Println("received list is ", emplist)
+	if emplist == nil {
+		fmt.Println("List is empty")
+	}
+	fastpr, slowptr = emplist, emplist
+	for fastpr.next != nil {
+		fastpr = fastpr.next
+		if fastpr.next != nil && slowptr.next != nil {
+			slowptr = slowptr.next
+			fastpr = fastpr.next
+		}
+	}
+	return slowptr
+}
+// Reverse the existing linked-list
+func reverseList(emplist *Employee) {
+	if emplist == nil {
+
+	}
+
+}
+
 // insert a new-employee , after an employee whose name has been given.
 func insertBeforenode(name string, newemployee, emplist *Employee) *Employee {
 	if emplist == nil {
